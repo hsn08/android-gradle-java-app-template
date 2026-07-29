@@ -1,24 +1,45 @@
-package burrows.apps.example.template.activity;
+package com.jaredsburrows.template;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.widget.Toast;
+import rikka.shizuku.Shizuku;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+public class MainActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+        if (checkShizukuPermission()) {
+            startBluetoothServer();
+        } else {
+            requestShizukuPermission();
+        }
+    }
 
-@RunWith(AndroidJUnit4.class)
-public final class MainActivityTest {
-  @Rule
-  public final ActivityScenarioRule<MainActivity> activityScenarioRule = new ActivityScenarioRule<>(MainActivity.class);
+    private boolean checkShizukuPermission() {
+        if (Shizuku.isPreV11()) return false;
+        return Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED;
+    }
 
-  @Test
-  public void shouldDisplayMainScreenWithCorrectTitle() {
-    onView(withText("Android Gradle Template")).check(matches(isDisplayed()));
-  }
+    private void requestShizukuPermission() {
+        Shizuku.addRequestPermissionResultListener(new Shizuku.OnRequestPermissionResultListener() {
+            @Override
+            public void onRequestPermissionResult(int requestCode, int grantResult) {
+                if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                    startBluetoothServer();
+                } else {
+                    Toast.makeText(MainActivity.this, "Shizuku izni reddedildi!", Toast.LENGTH_LONG).show();
+                }
+                Shizuku.removeRequestPermissionResultListener(this);
+            }
+        });
+        Shizuku.requestPermission(0);
+    }
+
+    private void startBluetoothServer() {
+        new BluetoothControlThread().start();
+        Toast.makeText(this, "PC Bekleniyor...", Toast.LENGTH_SHORT).show();
+    }
 }
