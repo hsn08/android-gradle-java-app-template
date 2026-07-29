@@ -98,7 +98,7 @@ public class BluetoothControlThread extends Thread {
 
     private boolean executeShizukuCommand(String command) {
         try {
-            Process process = Shizuku.newProcess(command.split(" "), null, null);
+            Process process = Shizuku.newProcess(command.split(" "), null, (java.io.File) null);
             int exitCode = process.waitFor();
             return exitCode == 0;
         } catch (Exception e) {
