@@ -22,7 +22,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 android {
   compileSdkVersion buildConfig.compileSdk
-  namespace 'burrows.apps.example.template'
+  namespace 'com.jaredsburrows.template'
 
   defaultConfig {
     applicationId 'burrows.apps.example.template'
