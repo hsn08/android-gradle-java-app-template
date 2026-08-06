@@ -84,6 +84,7 @@ dependencies {
   implementation deps.gps.base
   implementation 'dev.rikka.shizuku:api:12.1.0'
   implementation 'dev.rikka.shizuku:provider:12.1.0'
+  implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:6.1'
 
   androidTestImplementation deps.androidx.test.runner
   androidTestImplementation deps.androidx.test.rules
