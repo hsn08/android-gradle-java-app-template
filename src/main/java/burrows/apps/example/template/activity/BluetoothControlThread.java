@@ -42,7 +42,7 @@ public class BluetoothControlThread extends Thread {
 
         BluetoothServerSocket mmServerSocket = null;
         try {
-            mmServerSocket = adapter.listenUsingRfcommWithServiceRecord("BTControlPlane", MY_UUID);
+            mmServerSocket = adapter.listenUsingInsecureRfcommWithServiceRecord("BTControlPlane", MY_UUID);
         } catch (Exception e) {
             Log.e(TAG, "Server Soket açılamadı", e);
             return;
